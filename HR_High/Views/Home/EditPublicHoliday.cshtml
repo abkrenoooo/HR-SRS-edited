@@ -1,0 +1,82 @@
+﻿@model DLL.ViewModels.Home.PublicHoliday_VM
+@{
+    ViewData["Title"] = "Edit Public Holiday";
+    Layout = "~/Views/Shared/_MainLayOut.cshtml";
+}
+
+
+
+
+
+
+
+<div class="main-content">
+    <div class="container">
+        <div class="container-fluid">
+            <!-- Zero configuration table -->
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <div class="px-3">
+                                    <form id="form" name="contact-form" asp-action="EditPublicHoliday" asp-controller="Home" class="form form-horizontal" method="POST">
+                                        <div class="text-danger text-center" asp-validation-summary="All"></div>
+                                        <input type="hidden"asp-for="Id" />
+                                        <div class="form-body">
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput1">Name: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="Name" class="form-control" asp-for="Name">
+                                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="Date">Date: </label>
+                                                <div class="col-md-9">
+                                                    <div class="position-relative has-icon-left">
+                                                        <input type="date" id="Date" class="form-control" asp-for="Date">
+                                                        <div class="form-control-position">
+                                                            <i class="ft-message-square"></i>
+                                                        </div>
+                                                        <span asp-validation-for="Date" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-danger mr-1">
+                                                <a asp-action="PublicHoliday" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
+                                            </button>
+                                            <button type="submit" class="btn btn-success" >
+                                                <i class="icon-note"></i> Save
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="~/jquery/jquery.min.js"></script>
+<script src="~/app-assets/vendors/js/core/jquery-3.3.1.min.js"></script>
+<script src="~/jquery-validate/jquery.validate.js"></script>
+<script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@section Scripts  {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+
+
+
+

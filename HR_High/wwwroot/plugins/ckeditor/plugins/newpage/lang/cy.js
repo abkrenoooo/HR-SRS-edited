@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang("newpage","cy",{toolbar:"TuDLLen Newydd"});

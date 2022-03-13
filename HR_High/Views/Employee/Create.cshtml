@@ -1,0 +1,185 @@
+﻿@model DLL.ViewModels.Employee.Employee_VM
+@{
+    ViewData["Title"] = "Create Employee";
+    Layout = "~/Views/Shared/_MainLayOut.cshtml";
+}
+
+<div class="main-content">
+    <div class="container">
+        <div class="container-fluid">
+            <section id="horizontal-form-layouts">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2 class="content-header">Add Employees Form</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title" id="horz-layout-basic">Employee Information</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="px-3">
+                                    <form class="form form-horizontal" asp-action="Create" asp-controller="Employee" method="post">
+                                        <div class="text-danger text-center" asp-validation-summary="All"></div>
+                                        <div class="form-body">
+                                            <h4 class="form-section">
+                                                <i class="icon-user"></i> Personal Details
+                                            </h4>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput1">Name: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="projectinput1" class="form-control" asp-for="Name">
+                                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput2">Address: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="projectinput2" class="form-control" asp-for="Address">
+                                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput3">E-mail: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="projectinput3" class="form-control" asp-for="EMail">
+                                                    <span asp-validation-for="EMail
+                                                          " class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput4">Contact Number: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="projectinput4" class="form-control" asp-for=" Phone">
+                                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <h4 class="form-section">
+                                                <i class="icon-book-open"></i>Other Details
+                                            </h4>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput9">Date: </label>
+                                                <div class="col-md-9">
+                                                    <div class="position-relative has-icon-left">
+                                                        <input type="date" id="timesheetinput3" class="form-control" asp-for="BarthDate">
+                                                        <span asp-validation-for="BarthDate" class="text-danger"></span>
+                                                        <div class="form-control-position ml-2">
+                                                            <i class="ft-message-square"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput9">Type: </label>
+                                                <div class="col-md-9">
+                                                    <select id="projectinput7" class="form-control" asp-for="TypeState">
+                                                        <option value="Choose Type">Choose Type</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+                                                    <span asp-validation-for="TypeState" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput9">DATE OF CONTRACT: </label>
+                                                <div class="col-md-9">
+                                                    <div class="position-relative has-icon-left">
+                                                        <input type="date" id="timesheetinput3" class="form-control" asp-for="DateOfContract">
+                                                        <span asp-validation-for="DateOfContract" class="text-danger"></span>
+                                                        <div class="form-control-position ml-2">
+                                                            <i class="ft-message-square"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=" row">
+                                                <div class="col-md-12">
+                                                    <div class=" row form-group">
+                                                        <label class="col-md-3 label-control">Start time: </label>
+                                                        <div class="position-relative has-icon-left col-lg-9">
+                                                            <input type="time" id="timesheetinput5" class="form-control" asp-for="StartTime">
+                                                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                                                            <div class="form-control-position ml-2">
+                                                                <i class="ft-clock"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class=" row form-group">
+                                                        <label class="col-md-3 label-control">End time: </label>
+                                                        <div class="position-relative has-icon-left col-lg-9">
+                                                            <input type="time" id="timesheetinput6" class="form-control" asp-for="EndTime">
+                                                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                                                            <div class="form-control-position ml-2">
+                                                                <i class="ft-clock"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput7">Salary: </label>
+                                                <div class="col-md-9">
+                                                    <input type="number" s id="projectinput11" class="form-control" asp-for="Salary">
+                                                    <span asp-validation-for="Salary" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput11">National ID: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="projectinput11" class="form-control" asp-for="NationalId">
+                                                    <span asp-validation-for="NationalId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput12">Nationality: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="projectinput12" class="form-control" asp-for="Nationality">
+                                                    <span asp-validation-for="Nationality" class="text-danger"></span>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput9">Notes: </label>
+                                                <div class="col-md-9">
+                                                    <textarea id="projectinput9" rows="5" class="form-control" asp-for="Notes"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-danger mr-1">
+                                                <a asp-action="Index" asp-controller="Employee">Cancel</a>
+                                            </button>
+                                            <input type="submit" class="btn btn-primary" value="Save">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+
+<script src="~/jquery/jquery.min.js"></script>
+<script src="~/app-assets/vendors/js/core/jquery-3.3.1.min.js"></script>
+<script src="~/jquery-validate/jquery.validate.js"></script>
+
+<script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

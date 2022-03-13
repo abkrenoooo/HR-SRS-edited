@@ -1,0 +1,150 @@
+﻿@model DLL.ViewModels.Home.GenralSettings_VM
+@{
+    ViewData["Title"] = "Genral Settings";
+    Layout = "~/Views/Shared/_MainLayOut.cshtml";
+}
+
+<div class="main-content">
+    <div class="container">
+        <div class="container-fluid">
+            <section id="horizontal-form-layouts">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title" id="horz-layout-basic">General Settings Form </h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="px-3">
+                                    <form asp-action="GenralSettings" asp-controller="Home" class="form form-horizontal">
+                                        <input type="hidden" id="Id" asp-for="Id">
+                                        <div class="form-body">
+                                            <h4 class="form-section">
+                                                <i class="icon-user"></i>General information
+                                            </h4>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput1">The extra: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="Extra" class="form-control" asp-for="Extra">
+                                                </div>
+                                                <div class="row container m-auto d-flex justify-content-center">
+                                                    <span asp-validation-for="Extra" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput2">
+                                                    Discount:
+                                                </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="Discount" class="form-control" asp-for="Discount">
+                                                </div>
+                                            </div>
+                                            <div class="row container m-auto d-flex justify-content-center">
+                                                <span asp-validation-for="Discount" class="text-danger"></span>
+                                            </div>
+                                            <div class="row container m-auto d-flex justify-content-center">
+                                                <span asp-validation-for="Satrday" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput7">Weekly Holidays: </label>
+                                                <div class="col-md-9">
+                                                    <input type="checkbox" id="Satrday" asp-for="Satrday">
+                                                    <label asp-for="Satrday"> Satrday</label><br>
+                                                    <input type="checkbox" id="Sunday" asp-for="Sunday">
+                                                    <label asp-for="Sunday"> Sunday</label><br>
+                                                    <input type="checkbox" id="Monday" asp-for="Monday">
+                                                    <label asp-for="Monday"> Monday</label><br>
+                                                    <input type="checkbox" id="Tuesday" asp-for="Tuesday">
+                                                    <label asp-for="Tuesday"> Tuesday</label><br>
+                                                    <input type="checkbox" id="wednesday" asp-for="wednesday">
+                                                    <label asp-for="wednesday"> wednesday</label><br>
+                                                    <input type="checkbox" id="Turthday" asp-for="Turthday">
+                                                    <label asp-for="Turthday"> Turthday</label><br>
+                                                    <input type="checkbox" id="Friday" asp-for="Friday">
+                                                    <label asp-for="Friday">Friday</label>
+                                                    <br>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-danger mr-1">
+                                                <a asp-action="GenralSettingsView" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
+
+                                            </button>
+                                            <button type="button" onclick="Edit()" class="btn btn-success">
+                                                <i class="icon-note"></i> Save
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- // Basic form layout section end -->
+        </div>
+    </div>
+</div>
+<script>
+    function Edit() {
+        var Id = $("#Id").val();
+        var Extra = $("#Extra").val();
+        var Discount = $("#Discount").val();
+        var Sunday = $("#Sunday").is(':checked');
+        var Monday = $("#Monday").is(':checked');
+        var Tuesday = $("#Tuesday").is(':checked');
+        var wednesday = $("#wednesday").is(':checked');
+        var Turthday = $("#Turthday").is(':checked');
+        var Friday = $("#Friday").is(':checked');
+        var Satrday = $("#Satrday").is(':checked');
+        let input = {
+            Id: Id,
+            Extra: Extra,
+            Discount: Discount,
+            Sunday: Sunday,
+            Monday: Monday,
+            Tuesday: Tuesday,
+            wednesday: wednesday,
+            Turthday: Turthday,
+            Friday: Friday,
+            Satrday: Satrday,
+        };
+        swal({
+            title: "Are you sure?",
+            text: "Once Edit, you will not be able to recover this Data!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/GenralSettings",
+                        data: input,
+                        success: function (res) {
+                            if (res) {
+                                swal("Success Edit!", "You clicked the button!", "success").then((ok) => {
+                                    window.open("/Home/GenralSettingsView");
+                                });
+                            }
+                            else {
+                                swal("Error!", "You clicked the button!", "error");
+                            }
+                        }
+                    });
+                }
+                else {
+                    swal("Edit not Success!");
+                }
+            });
+        
+    }
+</script>

@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang("pagebreak","cy",{alt:"Toriad TuDLLen",toolbar:"Mewnosod Toriad TuDLLen i Argraffu"});

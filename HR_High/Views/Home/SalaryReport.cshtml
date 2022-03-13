@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewData["Title"] = "Salary Report";
+    Layout = "~/Views/Shared/_MainLayOut.cshtml";
+}
+
+<div class="main-content">
+    <div class="container">
+        <div class="container-fluid">
+            <!-- Zero configuration table -->
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">Salary report</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block card-dashboard" style="overflow-x: scroll; overflow-y: hidden;">
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3">
+                                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                                <label>
+                                                    Year
+                                                    <select id="year" name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control form-control-sm">
+                                                        <option value="10">1995</option>
+                                                        <option value="2020">2020</option>
+                                                        <option value="2021">2021</option>
+                                                        <option value="2022">2022</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-3">
+                                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                                <label>
+                                                    Month
+                                                    <select id="month" aria-controls="DataTables_Table_0" class="form-control form-control-sm">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="3">3</option>
+                                                        <option value="12">12</option>
+
+                                                        <option value="4">
+                                                            3
+                                                        </option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <button id="addRow" class="btn btn-primary mb-2">
+                                                <i class="ft-search"></i>&nbsp;
+                                                <a onclick="LoadData()">  Search Employee</a>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <table id="tblStudent" class="table table-striped table-bordered zero-configuration mt-40">
+                                        <thead>
+                                            <tr>
+                                                <th class='text-center'>Employees_Name</th>
+                                                <th class='text-center'>Phone</th>
+                                                <th class='text-center'>Salary</th>
+                                                <th class='text-center'>Attendance_days</th>
+                                                <th class='text-center'>Absent_days</th>
+                                                <th class='text-center'>Overtime_hours</th>
+                                                <th class='text-center'> Discount_hours</th>
+                                                <th class='text-center'>Extra</th>
+                                                <th class='text-center'>discount</th>
+                                                <th class='text-center'>Total</th>
+                                                <th class='text-center'>Invoice</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+<script>
+    function LoadData() {
+        var month = $('#month').val();
+        var year = $('#year').val();
+        $("#tblStudent tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '/Home/LoadDateSalaryReport?month=' + month + '&year=' + year,
+            success: function (data) {
+                console.log(data)
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<tr>"
+                        + "<td class='text-center'>" + item.name + "</td>"
+                        + "<td class='text-center'>" + item.phone + "</td>"
+                        + "<td class='text-center'>" + item.salary + "</td>"
+                        + "<td class='text-center'>" + item.attendanceDays + "</td>"
+                        + "<td class='text-center'>" + item.absentDays + "</td>"
+                        + "<td class='text-center'>" + item.discountHours + "</td>"
+                        + "<td class='text-center'>" + item.overtimeHours + "</td>"
+                        + "<td class='text-center'>" + item.discount + "$</td>"
+                        + "<td class='text-center'>" + item.extra + "$</td>"
+                        + "<td class='text-center'>" + item.total + "$</td>"
+                        + '<td class="text-center" ><a onclick="Invoice(' + item.id + "," + item.name + "," + item.phone + "," + item.salary + "," + item.attendanceDays + "," + item.absentDays + "," + item.discountHours + "," + item.overtimeHours + "," + item.discount + "," + item.extra + "," + item.total + ')" class="btn btn-danger mb-2" >Invoice</a></td >'
+
+
+                        //+ '<td class="text-center" >< i class="ft-plus" ></i >& nbsp; <a onclick="invoice(' + item.id + ')" >  Invoice</a></button ></td>'
+                        + "</tr>";
+                    $('#tblStudent tbody').append(rows);
+                });
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+        return false;
+    }
+    function Invoice(id, name, phone, salary, attendanceDays, absentDays, discountHours, overtimeHours, discount, extra, total) {
+        var salaryReport = {
+            Id: id,
+            Name: name,
+            Phone: phone,
+            Salary: salary,
+            AttendanceDays: attendanceDays,
+            AbsentDays: absentDays,
+            DiscountHours: discountHours,
+            OvertimeHours: overtimeHours,
+            Discount: discount,
+            Extra: extra,
+            Total: total
+        };
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/Home/Invoice",
+            data: salaryReport,
+            success: function (res) {
+                if (res == true) {
+                    swal("Success!", "You clicked the button!", "success").then((ok) => {
+                    });
+                }
+                else if (res == false) {
+                    swal("Error!", "Data Not Valid!", "error");
+                }
+                else if (res == "date") {
+                    swal("Error!", "This date already exists!", "error");
+                }
+            },
+            error: function (res) {
+                swal("Error!", " Cheack Your Date!", "error");
+            }
+        });
+    };
+</script>

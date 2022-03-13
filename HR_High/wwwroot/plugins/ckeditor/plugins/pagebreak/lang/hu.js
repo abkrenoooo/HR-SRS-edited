@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang("pagebreak","hu",{alt:"OlDLLtörés",toolbar:"OlDLLtörés beillesztése"});

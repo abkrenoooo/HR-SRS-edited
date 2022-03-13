@@ -1,0 +1,71 @@
+﻿@model DLL.ViewModel.AdminRole.PermissionsFormViewModel
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization;
+@{
+    ViewData["Title"] = "Create Group";
+    Layout = "~/Views/Shared/_MainLayOut.cshtml";
+}
+
+<div class="main-content">
+    <div class="container">
+        <div class="container-fluid">
+            <!-- Zero configuration table -->
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">Add New Group </h4>
+                                </div>
+                            </div>
+
+                            <div class="card-body collapse show">
+                                <form asp-action="Create" asp-controller="Admin" method="post">
+                                    <div class="row container m-auto d-flex justify-content-center">
+
+                                        <label>Group Name :</label>
+                                        <input type="search" asp-for="RoleName" class="form-control form-control-sm w-50" placeholder="">
+                                        <button type="submit" class="btn btn-info">add</button>
+                                    </div>
+                                    <div class="row container m-auto d-flex justify-content-center">
+                                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                                    </div>
+                                    <table class="table table-striped table-bordered zero-configuration mt-40 table-group">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Module Name</th>
+                                                <th class="text-center">Viwe </th>
+                                                <th class="text-center">Add</th>
+                                                <th class="text-center">Edit</th>
+                                                <th class="text-center">delete</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tbody>
+                                            @for (int i = 0; i < Model.RoleCalims.Count; i += 4)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">@Model.RoleCalims[i].DisplayValue.Split('.')[1] </td>
+                                                    <td class="text-center"><input type="hidden" asp-for="@Model.RoleCalims[i].DisplayValue" /> <input type="checkbox" asp-for="@Model.RoleCalims[i].IsSelected"></td>
+                                                    <td class="text-center"><input type="hidden" asp-for="@Model.RoleCalims[i+1].DisplayValue" /> <input type="checkbox" asp-for="@Model.RoleCalims[i+1].IsSelected"></td>
+                                                    <td class="text-center"><input type="hidden" asp-for="@Model.RoleCalims[i+2].DisplayValue" /> <input type="checkbox" asp-for="@Model.RoleCalims[i+2].IsSelected"></td>
+                                                    <td class="text-center"><input type="hidden" asp-for="@Model.RoleCalims[i+3].DisplayValue" /> <input type="checkbox" asp-for="@Model.RoleCalims[i+3].IsSelected"></td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+
