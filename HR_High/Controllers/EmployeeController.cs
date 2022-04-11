@@ -3,7 +3,6 @@ using BAL.Repository;
 using DLL.Data;
 using DLL.Models;
 using DLL.ViewModels.Employee;
-using HR_High.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +54,7 @@ namespace HR_High.Controllers
                         ModelState.AddModelError("TypeState", "Pleaze Select Valid Type");
                         return View(emp);
                     }
-                    if (((DateTime.Today-emp.BarthDate.Date).Days / 365) < 20)
+                    if (((DateTime.Today - emp.BarthDate.Date).Days / 365) < 20)
                     {
                         ModelState.AddModelError("BarthDate", "Employee must not be less than 20 years old");
                         return View(emp);
@@ -65,12 +64,20 @@ namespace HR_High.Controllers
                         ModelState.AddModelError("DateOfContract", "Please enter a valid contract date");
                         return View(emp);
                     }
-                    if ((emp.EndTime<=emp.StartTime))
+                    if ((emp.EndTime <= emp.StartTime))
                     {
                         ModelState.AddModelError("EndTime", "End Time Not valid");
                         return View(emp);
                     }
-                    employee.Add(emp);
+                    if (emp.Id==0)
+                    {
+                        employee.Add(emp);
+                    }
+                    else
+                    {
+                        employee.Edit(emp);
+                    }
+
                     return RedirectToAction("Index", "Employee");
                 }
                 else
@@ -84,44 +91,15 @@ namespace HR_High.Controllers
             }
 
         }
-        // GET: EmployeeController/Edit/5
         [Authorize("Permissions.Employee.Edit")]
-
         [HttpGet]
-
         public ActionResult Edit(int id)
         {
             var data = employee.GetById(id);
             return View(data);
         }
 
-        // POST: EmployeeController/Edit/5
-        [HttpPost]
-        public IActionResult Edit(Employee_VM emp)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var data = mapper.Map<Employee>(emp);
-                    db.Entry(data).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    var date = db.SaveChanges();
-                    if (date > 0)
-                    {
-                        return Json(true);
-                    }
-                    else
-                    {
-                        return Json(false);
-                    }
-                }
-                return View(emp);
-            }
-            catch (Exception)
-            {
-                return View(emp);
-            }
-        }
+        
         [Authorize("Permissions.Employee.Delete")]
         public IActionResult Delete(int id)
         {

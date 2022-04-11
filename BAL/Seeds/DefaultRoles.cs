@@ -11,7 +11,7 @@ namespace BAL.Seeds
         {
             if (!roleManger.Roles.Any())
             {
-                await roleManger.CreateAsync(new IdentityRole(Roles.HR.ToString()));
+                await roleManger.CreateAsync(new IdentityRole(Roles.Server.ToString()));
                 await roleManger.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
             }
         }

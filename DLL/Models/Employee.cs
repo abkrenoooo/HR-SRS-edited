@@ -22,5 +22,6 @@ namespace DLL.Models
         public string NationalId { get; set; }
         public string Nationality { get; set; }
         public string Notes { get; set; }
+        public int AbsentDay { get; set; }
     }
 }

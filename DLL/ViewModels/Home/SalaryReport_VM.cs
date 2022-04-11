@@ -9,6 +9,7 @@ namespace DLL.ViewModels.Home
     public class SalaryReport_VM
     {   
         public int Id { get; set; }
+        public int EmployeeId { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public decimal Salary { get; set; }
@@ -19,5 +20,6 @@ namespace DLL.ViewModels.Home
         public decimal Extra { get; set; }
         public decimal Discount { get; set; }
         public decimal Total { get; set; }
+        public decimal AdvancePayments { get; set; }
     }
 }

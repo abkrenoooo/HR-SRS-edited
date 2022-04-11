@@ -19,33 +19,9 @@
                             </div>
                             <div class="card-body collapse show">
                                 <div class="card-block card-dashboard">
-                                    <p class="card-text">DataTables has most features enabled by default, so all you need to do to use it with your own ables is to call the construction</p>
-
+                                    
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-3">
-                                            <div class="dataTables_length" id="DataTables_Table_0_length">
-                                                <label>
-                                                    Show
-                                                    <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control form-control-sm">
-                                                        <option value="10">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">
-                                                            100
-                                                        </option>
-                                                    </select>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-sm-12 col-md-3">
-                                            <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                                                <label>
-                                                    Search:<input type="search"
-                                                                  class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0">
-                                                </label>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-lg-1"></div>
                                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.User.ToString())).Result.Succeeded)
                                         {

@@ -68,14 +68,16 @@
                                                 <th class="text-center">Attendance_date</th>
                                                 <th class="text-center">check_out_date</th>
                                                 <th class="text-center">Nationality</th>
+                                                <th class="text-center">Absent Day</th>
                                                 @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Edit(Modules.Employee.ToString())).Result.Succeeded)
                                                 {
                                                     <th class="text-center">Edit</th>
-}
+                                                }
                                                 @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.Employee.ToString())).Result.Succeeded)
                                                 {
-                                                    <th class="text-center">Delete</th>}
-                                                </tr>
+                                                    <th class="text-center">Delete</th>
+}
+                                            </tr>
                                         </thead>
                                         <tbody>
 
@@ -91,6 +93,7 @@
                                                 <td class="text-center">@item.StartTime</td>
                                                 <td class="text-center">@item.EndTime</td>
                                                 <td class="text-center">@item.Nationality</td>
+                                                <td class="text-center">@item.AbsentDay</td>
                                                 @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Edit(Modules.Employee.ToString())).Result.Succeeded)
                                                 {
                                                     <td class="text-center">
@@ -98,15 +101,16 @@
                                                             <a asp-action="Edit" asp-controller="Employee" asp-route-id="@item.Id">Edit</a>
                                                         </button>
                                                     </td>
-}
+                                                }
                                                 @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.Employee.ToString())).Result.Succeeded)
                                                 {
                                                     <td class="text-center">
                                                         <button class="btn btn-danger mb-2">
                                                             <a asp-action="Delete" asp-controller="Employee" asp-route-id="@item.Id">Delete</a>
                                                         </button>
-                                                    </td>}
-                                                </tr>
+                                                    </td>
+}
+                                            </tr>
                                             }
 
                                         </tbody>

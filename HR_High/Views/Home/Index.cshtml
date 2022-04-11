@@ -1,4 +1,4 @@
-﻿
+﻿@model IQueryable<DLL.ViewModels.Employee.Employee_VM>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_MainLayOut.cshtml";
@@ -62,7 +62,7 @@
                                     <div class="row text-white">
                                         <div class="col-6">
                                             <h1><i class="fa fa-usd background-round text-white p-2 font-medium-3"></i></h1>
-                                            <h4 class="pt-1 m-0 text-white">123 <i class="fa fa-long-arrow-up"></i></h4>
+                                            <h4 class="pt-1 m-0 text-white">@ViewBag.Employees <i class="fa fa-long-arrow-up"></i></h4>
                                         </div>
                                         <div class="col-6 text-right pl-0">
                                             <h4 class="text-white mb-2">Employees</h4>
@@ -162,51 +162,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach (var item in Model)
+                                        {
                                         <tr>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-danger round mb-0" type="button">#695</button>
-                                            </td>
-                                            <td class="text-truncate">Tasneem saleh </td>
-                                            <td class="text-truncate">1-11-2021</td>
-                                            <td class="text-truncate">9 am </td>
-                                            <td class="text-truncate">5 pm </td>
+                                            <td class="border-top-0">@item.Id</td>
+                                            <td class="border-top-0">@item.Name</td>
+                                            <td class="border-top-0">@item.DateOfContract.Day/@item.DateOfContract.Month/@item.DateOfContract.Year</td>
+                                            <td class="border-top-0">@item.StartTime</td>
+                                            <td class="border-top-0">@item.EndTime</td>
+
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success round mb-0" type="button">#9985</button>
-                                            </td>
-                                            <td class="text-truncate">Mohamed ali</td>
-                                            <td class="text-truncate">1-11-2021</td>
-                                            <td class="text-truncate">10 am </td>
-                                            <td class="text-truncate">5 pm</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-danger round mb-0" type="button">#1111</button>
-                                            </td>
-                                            <td class="text-truncate">Eman ahmed</td>
-                                            <td class="text-truncate">1-11-2021</td>
-                                            <td class="text-truncate">9 am </td>
-                                            <td class="text-truncate">5 pm </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success round mb-0" type="button">#050</button>
-                                            </td>
-                                            <td class="text-truncate">ahmed mohamed</td>
-                                            <td class="text-truncate">1-11-2021</td>
-                                            <td class="text-truncate">9 am </td>
-                                            <td class="text-truncate">5 pm </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-danger round mb-0" type="button">#9333</button>
-                                            </td>
-                                            <td class="text-truncate">Reem Mohamed</td>
-                                            <td class="text-truncate">1-11-2021</td>
-                                            <td class="text-truncate">9 am </td>
-                                            <td class="text-truncate">5 pm </td>
-                                        </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>

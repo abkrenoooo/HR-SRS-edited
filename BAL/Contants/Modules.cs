@@ -5,10 +5,14 @@
         Employee,
         OfficialVacations,
         GenralSettings,
+        PrivateSettings,
         Premissions,
         Group,
         User,
         Salaryreport,
-        Attendance
+        Attendance,
+        AbsentDaysAllow,
+        AdvancePayment,
+        Rewaed
     }
 }

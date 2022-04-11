@@ -45,6 +45,7 @@ namespace DLL.ViewModels.Employee
         [Required(ErrorMessage = "Pleaze Enter Valid Nationality")]
         public string Nationality { get; set; }
         public string Notes { get; set; }
-
+        [Required(ErrorMessage = "Pleaze Enter Valid Number")]
+        public int AbsentDay { get; set; }
     }
 }

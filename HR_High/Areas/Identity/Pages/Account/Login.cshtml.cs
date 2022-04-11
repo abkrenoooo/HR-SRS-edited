@@ -82,11 +82,12 @@ namespace HR_High.Areas.Identity.Pages.Account
             }
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var username = new EmailAddressAttribute().IsValid(Input.Email) ? new MailAddress(Input.Email).User : Input.Email;
+
             if (ModelState.IsValid )
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                if (!user.IsActive)
+                if (user is not null&&!user.IsActive)
                 {
                     ModelState.AddModelError("Email", "This User is not Active now");
                     return Page();

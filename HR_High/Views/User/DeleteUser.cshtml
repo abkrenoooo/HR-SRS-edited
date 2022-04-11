@@ -1,5 +1,4 @@
-﻿
-@model DLL.ViewModel.User.UserViewModel
+﻿@model DLL.ViewModel.User.UserViewModel
 @{
     ViewData["Title"] = "Delete User";
     Layout = "~/Views/Shared/_MainLayOut.cshtml";
@@ -25,7 +24,7 @@
                                     <form class="form form-horizontal" asp-action="DeleteUser" asp-controller="User">
                                         <div class="text-danger text-center" asp-validation-summary="All"></div>
                                         <div class="form-body">
-                                            <input type="hidden" id="projectinput1" asp-for="Id">
+                                            <input type="hidden" id="Id" asp-for="Id">
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput1"> Name : </label>
                                                 <div class="col-md-9">
@@ -37,7 +36,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput1">User Name : </label>
                                                 <div class="col-md-9">
-                                                    <input type="text" id="projectinput1" class="form-control" asp-for="UserName"disabled>
+                                                    <input type="text" id="projectinput1" class="form-control" asp-for="UserName" disabled>
 
                                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                                 </div>
@@ -45,7 +44,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput1">Email : </label>
                                                 <div class="col-md-9">
-                                                    <input type="text" id="projectinput1" class="form-control" asp-for="Email"disabled>
+                                                    <input type="text" id="projectinput1" class="form-control" asp-for="Email" disabled>
 
                                                     <span asp-validation-for="Email" class="text-danger"></span>
                                                 </div>
@@ -53,7 +52,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput2">Password: </label>
                                                 <div class="col-md-9">
-                                                    <input type="password" id="projectinput2" class="form-control" asp-for="Password"disabled>
+                                                    <input type="password" id="projectinput2" class="form-control" asp-for="Password" disabled>
 
                                                     <span asp-validation-for="Password" class="text-danger"></span>
                                                 </div>
@@ -61,7 +60,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput7">Group Name : </label>
                                                 <div class="col-md-9">
-                                                    <select id="projectinput7" class="form-control" asp-for="RoleId" asp-items="@(SelectList)ViewBag.rolesList"disabled>
+                                                    <select id="projectinput7" class="form-control" asp-for="RoleId" asp-items="@(SelectList)ViewBag.rolesList" disabled>
                                                         <option value="Choose Department">Choose Department</option>
                                                     </select>
 
@@ -73,7 +72,8 @@
                                             <button type="button" class="btn btn-success mr-1">
                                                 <a asp-action="Index" asp-controller="User">Cancel</a>
                                             </button>
-                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                            <a onclick="DeleteUser()" class="btn btn-danger mb-2">Delete</a>
+
                                         </div>
                                     </form>
                                 </div>
@@ -92,5 +92,41 @@
 
 <script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
+<script>
 
-
+        function DeleteUser() {
+            let Id = $("#Id").val();
+            console.log(Id);
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+            type: "POST",
+            url:"/User/DeleteUserPost/"+Id,
+           // data: Id ,
+            success: function (res) {
+                if (res == true) {
+                    swal("Success!", "You clicked the button!", "success").then((ok) => {
+                        window.open("/User/Index");
+                    });
+                }
+                else if (res == false) {
+                    swal("Error!", "Data Not Valid!", "error");
+                }
+            },
+            error: function (res) {
+                swal("Error!", " Cheack Your Date!", "error");
+            }
+        });
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+    }
+</script>

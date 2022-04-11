@@ -24,9 +24,9 @@
                                     <div class="row container m-auto d-flex justify-content-center">
 
                                         <label>Group Name :</label>
-                                        <input type="hidden" asp-for="RoleId" />
+                                        <input type="hidden" id="Id" asp-for="RoleId" />
                                         <input type="search" asp-for="RoleName" class="form-control form-control-sm w-50" placeholder=""disabled>
-                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <a onclick="DeleteUser()" class="btn btn-danger mb-2">Delete</a>
                                     </div>
                                     <div class="row container m-auto d-flex justify-content-center">
                                         <span asp-validation-for="RoleName" class="text-danger"></span>
@@ -66,3 +66,42 @@
     </div>
 </div>
 
+
+<script>
+
+        function DeleteUser() {
+            let Id = $("#Id").val();
+            console.log(Id);
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+            type: "POST",
+            url:"/Admin/DeletePermissionsPost/"+Id,
+           // data: Id ,
+            success: function (res) {
+                if (res == true) {
+                    swal("Success!", "You clicked the button!", "success").then((ok) => {
+                        window.open("/Admin/Index");
+                    });
+                }
+                else if (res == false) {
+                    swal("Error!", "Data Not Valid!", "error");
+                }
+            },
+            error: function (res) {
+                swal("Error!", " Cheack Your Date!", "error");
+            }
+        });
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+    }
+</script>

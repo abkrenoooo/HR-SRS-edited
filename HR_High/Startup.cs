@@ -4,7 +4,6 @@ using BAL.Repository;
 using BAL.Repository.SalaryReport;
 using DLL.Data;
 using DLL.Models;
-using HR_High.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

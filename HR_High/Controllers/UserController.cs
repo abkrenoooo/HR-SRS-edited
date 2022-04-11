@@ -35,7 +35,7 @@ namespace HR_High.Controllers
         {
             var users = await userManager.Users
                 .Select(user => new UserViewModel { Id = user.Id, UserName = user.UserName,IsActive=user.IsActive, Email = user.Email, Role = userManager.GetRolesAsync(user).Result })
-                .ToListAsync();
+                .Where(x => x.UserName != "Server").ToListAsync();
             if (ViewData["State"] == null)
                 ViewData["State"] = "Active";
             return View(users);
@@ -43,7 +43,7 @@ namespace HR_High.Controllers
         [Authorize("Permissions.User.Create")]
         public async Task<IActionResult> CreateUser()
         {
-            var roles = await roleManager.Roles.ToListAsync();
+            var roles = await roleManager.Roles.Where(x => x.Name != "Server").ToListAsync();
             ViewBag.rolesList = new SelectList(roles, "Id", "Name");
             
             return View();
@@ -55,6 +55,7 @@ namespace HR_High.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.IsActive = true;
                 var roles = await roleManager.Roles.ToListAsync();
                 ViewBag.rolesList = new SelectList(roles, "Id", "Name", model.RoleId);
                 if (model.RoleId == "Choose Department")
@@ -80,6 +81,7 @@ namespace HR_High.Controllers
                     FullName = model.FullName,
                     UserName = model.UserName,
                     Email = model.Email,
+                    IsActive=true,
                 };
                 var result = await userManager.CreateAsync(userVM, model.Password);
                 if (result.Succeeded)
@@ -107,7 +109,7 @@ namespace HR_High.Controllers
             if (user == null)
                 return NotFound();
 
-            var roles = await roleManager.Roles.ToListAsync();
+            var roles = await roleManager.Roles.Where(x => x.Name != "Server").ToListAsync();
             var role = roleManager.FindByNameAsync(userManager.GetRolesAsync(user).Result.ElementAt(0)).Result;
             ViewBag.rolesList = new SelectList(roles, "Id", "Name", role.Id);
 
@@ -131,7 +133,7 @@ namespace HR_High.Controllers
             if (ModelState.IsValid)
             {
                 var user = await userManager.FindByNameAsync(model.UserName);
-                var roles = await roleManager.Roles.ToListAsync();
+                var roles = await roleManager.Roles.Where(x => x.Name != "Server").ToListAsync();
                 var role = roleManager.FindByNameAsync(userManager.GetRolesAsync(user).Result.ElementAt(0)).Result;
                 ViewBag.rolesList = new SelectList(roles, "Id", "Name", role.Id);
                 if (model.RoleId == "Choose Department")
@@ -200,29 +202,45 @@ namespace HR_High.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteUser(UserViewModel model)
+        public async Task<IActionResult> DeleteUserPost(string Id)
         {
-            var user = await userManager.FindByIdAsync(model.Id);
+            var user = await userManager.FindByIdAsync(Id);
 
             if (user == null)
                 return NotFound();
-
+            string userName = HttpContext.User.Identity.Name;
+            var userLogin =await userManager.FindByNameAsync(userName);
+            if(userLogin==user)
+            {
+                await signInManager.SignOutAsync();
+            }
+            
             var result = await userManager.DeleteAsync(user);
-
             var userRoles = await userManager.GetRolesAsync(user);
             await userManager.RemoveFromRolesAsync(user, userRoles);
 
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(Index));
+                return Json(true);
             }
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error.Description);
+                return Json(false);
             }
+            var role = roleManager.FindByNameAsync(userManager.GetRolesAsync(user).Result.ElementAt(0)).Result;
+            var model = new UserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FullName = user.FullName,
+                RoleId = role.Id
+
+            };
             return View(model);
         }
+
+
         public async Task<IActionResult> ActiveUser(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);

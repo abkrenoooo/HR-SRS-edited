@@ -47,6 +47,9 @@ html {
     -ms-overflow-style: scrollbar;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+.app-sidebar {
+    overflow-y: hidden;
+}
 
 @-ms-viewport {
     width: device-width;
@@ -52275,11 +52278,13 @@ datetime .form-group {
 .app-sidebar .sidebar-content,
 .off-canvas-sidebar .sidebar-content {
     position: relative;
-    height: -webkit-calc(100vh - 90px);
-    height: -moz-calc(100vh - 90px);
-    height: calc(100vh - 90px);
+    height: -webkit-calc(100vh - 130px);
+    height: -moz-calc(100vh - 130px);
+    height: calc(100vh - 130px);
     overflow: auto;
     z-index: 4;
+    padding:0;
+    margin-bottom:20px;
 }
 
 .app-sidebar .logo-img,

@@ -1,9 +1,10 @@
-﻿
-@model DLL.ViewModels.Attendance_VM
+﻿@model DLL.ViewModels.Home.AdvancePayment_VM
 @{
-    ViewData["Title"] = "Attendance";
+    ViewData["Title"] = "AdvancePayment";
     Layout = "~/Views/Shared/_MainLayOut.cshtml";
 }
+
+
 
 <div class="main-content">
     <div class="container">
@@ -13,47 +14,43 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            
                             <div class="card-header">
                                 <div class="card-title-wrap bar-success">
-                                    <form asp-action="import" asp-controller="Home" method="post" enctype="multipart/form-data">
-                                        <input type="file" name="file" />
-                                        <button  class="btn btn-primary mb-2" type="submit">
-                                            <i class="ft-search"></i>&nbsp;
-                                             Import File
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="card-title-wrap bar-success">
-                                    <h4 class="card-title">Attendance and departure request</h4>
+                                    <h4 class="card-title">Advance Payment request</h4>
                                 </div>
                             </div>
                             <div class="card-body collapse show">
                                 <div class="card-block card-dashboard">
-                                    
-                                    
-                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.Attendance.ToString())).Result.Succeeded)
+
+
+                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.AdvancePayment.ToString())).Result.Succeeded)
                                     {
-                                        <table id="tblStudent" class="table table-striped table-bordered zero-configuration mt-40">
+                                        <table id="tblStudent2" class="table table-striped table-bordered zero-configuration mt-40">
 
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">Name</th>
                                                     <th class="text-center">Date </th>
-                                                    <th class="text-center">Attendance date</th>
-                                                    <th class="text-center">check-out date</th>
-                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.Attendance.ToString())).Result.Succeeded)
+                                                    <th class="text-center">Value</th>
+                                                    <th class="text-center">Number of Months</th>
+                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Edit(Modules.AdvancePayment.ToString())).Result.Succeeded)
                                                     {
-                                                        <th class="text-center">Action</th>}
-                                                    </tr>
+                                                        <th class="text-center">Edit</th>
+                                                    }
+                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.AdvancePayment.ToString())).Result.Succeeded)
+                                                    {
+                                                        <th class="text-center">Delete</th>
+                                                    }
+                                                </tr>
                                             </thead>
                                             <tbody>
+
                                             </tbody>
 
                                         </table>}
                                 </div>
                             </div>
-                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.Attendance.ToString())).Result.Succeeded)
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.AdvancePayment.ToString())).Result.Succeeded)
                             {
                                 <div class="card-header">
                                     <div class="card-title-wrap bar-success">
@@ -63,8 +60,7 @@
 
                                 <div class="card-body">
                                     <div class="px-3">
-                                        <form id="form" name="contact-form" asp-action="CreateAttendance" asp-controller="Home" class="form form-horizontal" data-ajax="true" data-ajax-method="POST">
-                                            
+                                        <form id="form" name="contact-form" asp-action="CreateAdvancePayment" asp-controller="Home" class="form form-horizontal" data-ajax="true" data-ajax-method="POST">
                                             <div class="form-body">
 
                                                 <div class="form-group row">
@@ -96,35 +92,23 @@
                                                 </div>
                                             </div>
 
-                                            <div class=" row">
-                                                <div class="col-md-12">
-                                                    <div class=" row form-group">
-                                                        <label class="col-md-3 label-control">Start time: </label>
-                                                        <div class="position-relative has-icon-left col-lg-9">
-                                                            <input type="time" id="StartTime" class="form-control" asp-for="StartTime">
-                                                            <div class="form-control-position">
-                                                                <i class="ft-clock"></i>
-                                                            </div>
-                                                            <span asp-validation-for="StartTime" class="text-danger"></span>
-                                                        </div>
-                                                    </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput7">Value: </label>
+                                                <div class="col-md-9">
+                                                    <input type="number" s id="Value" class="form-control" asp-for="Value">
+                                                    <span asp-validation-for="Value" class="text-danger"></span>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <div class=" row form-group">
-                                                        <label class="col-md-3 label-control">End time: </label>
-                                                        <div class="position-relative has-icon-left col-lg-9">
-                                                            <input type="time" id="EndTime" class="form-control" asp-for="EndTime">
-                                                            <div class="form-control-position">
-                                                                <i class="ft-clock"></i>
-                                                            </div>
-                                                        </div>
-                                                        <span asp-validation-for="EndTime" class="text-danger"></span>
-                                                    </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput7">Number Of Monthes: </label>
+                                                <div class="col-md-9">
+                                                    <input type="number" s id="NumberOfMonthes" class="form-control" asp-for="NumberOfMonthes">
+                                                    <span asp-validation-for="NumberOfMonthes" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="form-actions">
                                                 <button type="button" class="btn btn-danger mr-1">
-                                                    <a asp-action="Attendance" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
+                                                    <a asp-action="AdvancePayment" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
                                                 </button>
                                                 <button type="button" class="btn btn-success" onclick="Create()">
                                                     <i class="icon-note"></i> Save
@@ -156,19 +140,19 @@
     });
     function Create() {
         let EmployeeId = $("#EmployeeId").val();
-        let EndTime = $("#EndTime").val();
+        let NumberOfMonthes = $("#NumberOfMonthes").val();
         let Date = $("#Date").val();
-        let StartTime = $("#StartTime").val();
+        let Value = $("#Value").val();
         var attendance = {
             EmployeeId: EmployeeId,
             Date: Date,
-            StartTime: StartTime,
-            EndTime: EndTime,
+            Value: Value,
+            NumberOfMonthes: NumberOfMonthes,
         };
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: "/Home/CreateAttendance",
+            url: "/Home/CreateAdvancePayment",
             data: attendance,
             success: function (res) {
                 if (res == true) {
@@ -180,20 +164,8 @@
                 else if (res == false) {
                     swal("Error!", "Data Not Valid!", "error");
                 }
-                else if (res == "date") {
-                    swal("Error!", "This date already exists!", "error");
-                }
-                else if (res == "holiday") {
-                    swal("Error!", "This date already holiday!", "error");
-                }
-                else if (res == "Public Holidays") {
-                    swal("Error!", "This Date Is Found In Public Holidays!", "error");
-                }
-                else if (res == "EndTime") {
-                    swal("Error!", "End Time Not valid!", "error");
-                }
-                else if (res == "StartTime") {
-                    swal("Error!", "Start Time Not valid!", "error");
+                else if (res == "Value") {
+                    swal("Error!", "This Value may be bigger than him Salary", "error");
                 }
             },
             error: function (res) {
@@ -202,10 +174,10 @@
         });
     };
     function LoadData() {
-        $("#tblStudent tbody tr").remove();
+        $("#tblStudent2 tbody tr").remove();
         $.ajax({
-            type: 'POST',
-            url: '/Home/LoadDateAttendance',
+            type: 'GET',
+            url: '/Home/LoadDateAdvancePayment',
             dataType: 'json',
             data: { id: '' },
             success: function (data) {
@@ -215,12 +187,14 @@
                     var rows = "<tr>"
                         + "<td id='empid' class='text-center'>" + item.employeeName + "</td>"
                         + "<td class='text-center'>" + item.date.substring(0, 10) + "</td>"
-                        + "<td class='text-center'>" + item.startTimeSTr.substring(0, 8) + "</td>"
-                        + "<td class='text-center'>" + item.endTimeStr.substring(0, 8) + "</td>"
-                        + '@if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.Attendance.ToString())).Result.Succeeded)
+                        + "<td class='text-center'>" + item.value + "</td>"
+                        + "<td class='text-center'>" + item.numberOfMonthes + "</td>"
+                        + '@if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Edit(Modules.AdvancePayment.ToString())).Result.Succeeded)
+                            {<td class="text-center"><button class="btn btn-success mb-2"><a  href="EditAdvancePayment/' + item.id + '">Edit</a></button></td>}'
+                        + '@if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.AdvancePayment.ToString())).Result.Succeeded)
                             {<td class="text-center" ><a onclick="Delete(' + item.id + ')" class="btn btn-danger mb-2"  >Delete</a></td >}'
                         + "</tr>";
-                    $('#tblStudent tbody').append(rows);
+                    $('#tblStudent2 tbody').append(rows);
                 });
             },
             error: function (ex) {
@@ -231,7 +205,7 @@
             }
         });
         return false;
-    }
+    };
     function Delete(id) {
         swal({
             title: "Are you sure?",
@@ -244,7 +218,7 @@
                 if (willDelete) {
                     $.ajax({
                         type: 'POST',
-                        url: '/Home/DeleteAttendance/' + id,
+                        url: '/Home/DeleteAdvancePayment/' + id,
                         success: function (res) {
                             if (res) {
                                 swal("Poof! Your imaginary file has been deleted!", {
@@ -261,7 +235,8 @@
                     swal("Your imaginary file is safe!");
                 }
             });
-    }
+    };
+
 </script>
 
 <script src="~/jquery/jquery.min.js"></script>

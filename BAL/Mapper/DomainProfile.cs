@@ -11,11 +11,8 @@ namespace BAL.Mapper
 {
     public class DomainProfile : Profile
     {
-     
-        
         public DomainProfile()
         {
-
             CreateMap<Employee, Employee_VM>();
             CreateMap<Employee_VM, Employee>();
             CreateMap<GenralSettings, GenralSettings_VM>();
@@ -24,6 +21,14 @@ namespace BAL.Mapper
             CreateMap<Attendance, Attendance_VM>();
             CreateMap<PublicHoliday, PublicHoliday_VM>();
             CreateMap<PublicHoliday_VM, PublicHoliday>();
+            CreateMap<PrivateSettings, PrivateSettings_VM>();
+            CreateMap<PrivateSettings_VM, PrivateSettings>();
+            CreateMap<AbsentDaysAllow, AbsentDaysAllow_VM>();
+            CreateMap<AbsentDaysAllow_VM, AbsentDaysAllow>();
+            CreateMap<Rewaed, Rewaed_VM>();
+            CreateMap<Rewaed_VM, Rewaed>();
+            CreateMap<AdvancePayment, AdvancePayment_VM>();
+            CreateMap<AdvancePayment_VM, AdvancePayment>();
         }
 
     }

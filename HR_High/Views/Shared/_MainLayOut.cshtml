@@ -55,57 +55,89 @@
                         </li>
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.Employee.ToString())).Result.Succeeded)
                         {
-            <li class="has-sub nav-item">
-                <a href="#"><i class="icon-users"></i><span data-i18n="" class="menu-title"> Employees</span></a>
-                <ul class="menu-content">
+                    <li class="has-sub nav-item">
+                        <a href="#"><i class="icon-users"></i><span data-i18n="" class="menu-title"> Employees</span></a>
+                        <ul class="menu-content">
+                            <li>
+                                <a asp-action="index" asp-controller="Employee" class="menu-item"> <i class="icon-bar"></i> Employees Statistics</a>
+                            </li>
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.Employee.ToString())).Result.Succeeded)
+                            {
                     <li>
-                        <a asp-action="index" asp-controller="Employee" class="menu-item"> <i class="icon-bar"></i> Employees Statistics</a>
-                    </li>
-                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.Employee.ToString())).Result.Succeeded)
-                    {
-    <li>
-        <a asp-action="Create" asp-controller="Employee" class="menu-item">Add Employee</a>
-    </li>
-}
-                </ul>
-            </li>
-}
+                        <a asp-action="Create" asp-controller="Employee" class="menu-item">Add Employee</a>
+                    </li>}
+                        </ul>
+                    </li>}
 
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.OfficialVacations.ToString())).Result.Succeeded)
                         {
-            <li class=" nav-item">
-                <a asp-action="PublicHoliday" asp-controller="Home"><i class="icon-note"></i><span data-i18n="" class="menu-title">Official Vacations</span></a>
-            </li>}
+                    <li class=" nav-item">
+                        <a asp-action="PublicHoliday" asp-controller="Home"><i class="icon-note"></i><span data-i18n="" class="menu-title">Official Vacations</span></a>
+                    </li>
+}
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.GenralSettings.ToString())).Result.Succeeded)
                         {
-            <li class=" nav-item">
-                <a asp-action="GenralSettingsView" asp-controller="Home"><i class="icon-pie-chart"></i><span data-i18n="" class="menu-title"> General Settings</span></a>
-            </li>}
+                    <li class=" nav-item">
+                        <a asp-action="GenralSettingsView" asp-controller="Home"><i class="icon-pie-chart"></i><span data-i18n="" class="menu-title"> General Settings</span></a>
+                    </li>
+}
+                        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.PrivateSettings.ToString())).Result.Succeeded)
+                        {
+                    <li class=" nav-item">
+                        <a asp-action="PrivateSettings" asp-controller="Home"><i class="icon-arrow-down"></i><span data-i18n="" class="menu-title">Private Settings</span></a>
+                    </li>
+}
+                        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.Rewaed.ToString())).Result.Succeeded)
+                        {
+                    <li class=" nav-item">
+                        <a asp-action="Rewaed" asp-controller="Home"><i class="icon-emoticon-smile"></i><span data-i18n="" class="menu-title">Rewaed</span></a>
+                    </li>
+}
+                        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.AdvancePayment.ToString())).Result.Succeeded)
+                        {
+                    <li class=" nav-item">
+                        <a asp-action="AdvancePayment" asp-controller="Home"><i class="icon-magnifier-add"></i><span data-i18n="" class="menu-title">Advance Payment</span></a>
+                    </li>}
+
+                        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.AbsentDaysAllow.ToString())).Result.Succeeded)
+                        {
+                    <li class=" nav-item">
+                        <a asp-action="AbsentDaysAllow" asp-controller="Home">
+                            <i class="icon-basket"></i><span data-i18n="" class="menu-title">
+                                Absent Days
+                            </span>
+                        </a>
+                    </li>
+}
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.Attendance.ToString())).Result.Succeeded)
                         {
-            <li class=" nav-item">
-                <a asp-action="Attendance" asp-controller="Home">
-                    <i class="icon-support"></i><span data-i18n="" class="menu-title">
-                        Attendance
-                    </span>
-                </a>
-            </li>}
+                    <li class=" nav-item">
+                        <a asp-action="Attendance" asp-controller="Home">
+                            <i class="icon-book-open"></i><span data-i18n="" class="menu-title">
+                                Attendance
+                            </span>
+                        </a>
+                    </li>
+}
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.Salaryreport.ToString())).Result.Succeeded)
                         {
-            <li class=" nav-item">
-                <a asp-action="SalaryReport" asp-controller="Home"><i class="icon-layers"></i><span data-i18n="" class="menu-title">Salary report</span></a>
-            </li>}
+                    <li class=" nav-item">
+                        <a asp-action="SalaryReport" asp-controller="Home"><i class="icon-layers"></i><span data-i18n="" class="menu-title">Salary report</span></a>
+                    </li>
+}
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.User.ToString())).Result.Succeeded)
 
                         {
-            <li class=" nav-item">
-                <a asp-action="index" asp-controller="User"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>
-            </li>}
+                    <li class=" nav-item">
+                        <a asp-action="index" asp-controller="User"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>
+                    </li>
+}
                         @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.Group.ToString())).Result.Succeeded)
                         {
-            <li class=" nav-item">
-                <a asp-action="Index" asp-controller="Admin"><i class="icon-equalizer"></i><span data-i18n="" class="menu-title">Permissions</span></a>
-            </li> } @*<li class=" nav-item"><a asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Page("/", new { area = "" })"><i class="icon-pin"></i><span data-i18n="" class="menu-title">Login Page </span></a></li>*@
+                    <li class=" nav-item">
+                        <a asp-action="Index" asp-controller="Admin"><i class="icon-equalizer"></i><span data-i18n="" class="menu-title">Groups</span></a>
+                    </li>
+ } @*<li class=" nav-item"><a asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Page("/", new { area = "" })"><i class="icon-pin"></i><span data-i18n="" class="menu-title">Login Page </span></a></li>*@
                         <li class=" nav-item">
 
                             <form class="form-logout container ml-2" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
@@ -212,6 +244,8 @@
                                 </a>
                                 <div aria-labelledby="dropdownBasic3" class="dropdown-menu dropdown-menu-right">
                                     <div class="arrow_box_right">
+                                        <a href="user-profile-page.html" class="dropdown-item py-1"><i class="ft-edit mr-2"></i><span>@User.Identity.Name</span></a><a href="chat.html" class="dropdown-item py-1"><i class="ft-message-circle mr-2"></i><span>My Chat</span></a>
+                                        
                                         <a href="user-profile-page.html" class="dropdown-item py-1"><i class="ft-edit mr-2"></i><span>My Profile</span></a><a href="chat.html" class="dropdown-item py-1"><i class="ft-message-circle mr-2"></i><span>My Chat</span></a>
                                         <a href="javascript:;" class="dropdown-item py-1"><i class="ft-settings mr-2"></i><span>Settings</span></a>
                                         <div class="dropdown-divider"></div>

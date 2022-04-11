@@ -1,4 +1,5 @@
 ﻿using BAL.Contants;
+using DLL.Data;
 using DLL.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
@@ -14,17 +15,19 @@ namespace BAL.Seeds
         {
             var defaultUser = new AppUser
             {
-                UserName = "HR",
-                Email = "HR@domain.com",
-                EmailConfirmed = true
+                UserName = "Server",
+                FullName = "Server",
+                Email = "Server@domain.com",
+                EmailConfirmed = true,
+                IsActive = true
             };
 
             var user = await userManager.FindByEmailAsync(defaultUser.Email);
 
             if (user == null)
             {
-                await userManager.CreateAsync(defaultUser, "HRhr@123");
-                await userManager.AddToRoleAsync(defaultUser, Roles.HR.ToString());
+                await userManager.CreateAsync(defaultUser, "Server@123");
+                await userManager.AddToRoleAsync(defaultUser, Roles.Server.ToString());
             }
             await roleManger.SeeDLLlClaimsForHR();
         }
@@ -34,8 +37,10 @@ namespace BAL.Seeds
             var defaultUser = new AppUser
             {
                 UserName = "Admin",
+                FullName = "Admin",
                 Email = "Admin@domain.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsActive = true
             };
 
             var user = await userManager.FindByEmailAsync(defaultUser.Email);
@@ -50,7 +55,7 @@ namespace BAL.Seeds
 
         private static async Task SeeDLLlClaimsForHR(this RoleManager<IdentityRole> roleManager)
         {
-            var adminRole = await roleManager.FindByNameAsync(Roles.HR.ToString());
+            var adminRole = await roleManager.FindByNameAsync(Roles.Server.ToString());
             await roleManager.AdDLLlPermissionClaims(adminRole);
         }
         public static async Task AdDLLlPermissionClaims(this RoleManager<IdentityRole> roleManager, IdentityRole role)
@@ -64,5 +69,6 @@ namespace BAL.Seeds
                     await roleManager.AddClaimAsync(role, new Claim("Permission", permission));
             }
         }
+        
     }
 }

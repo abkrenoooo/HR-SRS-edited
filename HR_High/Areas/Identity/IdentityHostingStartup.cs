@@ -1,5 +1,4 @@
 ﻿using System;
-using HR_High.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;

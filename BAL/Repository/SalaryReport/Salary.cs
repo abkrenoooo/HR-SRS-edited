@@ -116,6 +116,30 @@ namespace BAL.Repository.SalaryReport
             }
             return Math.Abs(data);
         }
+        public decimal Discount(int id, int year, int month)
+        {
+            var rewaed = db.Rewaeds.Where(x => x.EmployeeId == id && x.Type == "Discount" && x.Date.Year == year && x.Date.Month == month).Sum(x => x.Value);
+            return rewaed;
+        }
+        public decimal Extra(int id, int year, int month)
+        {
+            var data = db.Rewaeds.Where(x => x.EmployeeId == id && x.Type == "Extra" && x.Date.Year==year&&x.Date.Month==month).Sum(x => x.Value);
+
+            return data;
+        }
+        public decimal AdvancePayments(int id, int year, int month)
+        {
+            var advancePayments = db.AdvancePayments.Where(x => x.EmployeeId == id).ToList();
+            decimal total = 0;
+            foreach (var item in advancePayments)
+            {
+                if ((item.Date.Year == year && month >= item.Date.Month && (month - item.Date.Month) < item.NumberOfMonthes) || (item.Date.Year < year && (12 - item.Date.Month) < Math.Abs(month - item.NumberOfMonthes)))
+                {
+                    total += (item.Value / (decimal)item.NumberOfMonthes);
+                }
+            }
+            return total;
+        }
 
     }
 }

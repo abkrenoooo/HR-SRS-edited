@@ -1,11 +1,13 @@
 ﻿
 using BAL.Contants;
+using DLL.Data;
 using DLL.Models;
 using DLL.ViewModel.AdminRole;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,16 +20,19 @@ namespace HR.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<AppUser> userManager;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        public ApplicationDbContext db { get; }
+
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, ApplicationDbContext _db)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            db = _db;
         }
 
         [Authorize("Permissions.Group.View")]
         public async Task<IActionResult> Index()
         {
-            var roles = await roleManager.Roles.ToListAsync();
+            var roles = await roleManager.Roles.Where(x=>x.Name!="Server").ToListAsync();
             return View(roles);
         }
         //if(AuthorizationService.AuthorizeAsync(User, Permissions.Module.Edit(Modules.Group.ToString())).Result.Succeeded)
@@ -72,19 +77,18 @@ namespace HR.Controllers
             }
             if (model.RoleCalims.Where(p => p.IsSelected == true).Count() > 0 && !await roleManager.RoleExistsAsync(model.RoleName))
             {
+
                 await roleManager.CreateAsync(new IdentityRole(model.RoleName.Trim()));
                 var allClaims = Permissions.GenerateAllPermissions().ToList();
                 var roleCalims = model.RoleCalims.ToList();
-                
-                
-                var role = await roleManager.FindByNameAsync(model.RoleName);
-                var selectedClaims = roleCalims.Select(p => new CheckBoxViewModel { DisplayValue = allClaims.ToString(), IsSelected = p.IsSelected }).Where(c => c.IsSelected).ToList();
 
-                //var selectedClaims = model.RoleCalims.Select(p=>new CheckBoxViewModel {DisplayValue=allClaims.ToString(),IsSelected=roleCalims. })
+
+                var role = await roleManager.FindByNameAsync(model.RoleName);
+                
+                var selectedClaims = model.RoleCalims.Where(c => c.IsSelected).ToList();
+
                 foreach (var claim in selectedClaims)
-                {
                     await roleManager.AddClaimAsync(role, new Claim("Permission", claim.DisplayValue));
-                }
 
 
             }
@@ -98,7 +102,7 @@ namespace HR.Controllers
             if (role == null)
                 return NotFound();
 
-            var roleClaims = roleManager.GetClaimsAsync(role).Result.Select(c => c.Value).ToList();
+            var roleClaims = roleManager.GetClaimsAsync(role).Result.Select(c => c.Value);
             var allClaims = Permissions.GenerateAllPermissions();
             var allPermissions = allClaims.Select(p => new CheckBoxViewModel { DisplayValue = p }).ToList();
 
@@ -170,10 +174,10 @@ namespace HR.Controllers
         public async Task<IActionResult> DeletePermissions(string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
+            
 
             if (role == null)
                 return NotFound();
-
             var roleClaims = roleManager.GetClaimsAsync(role).Result.Select(c => c.Value).ToList();
             var allClaims = Permissions.GenerateAllPermissions();
             var allPermissions = allClaims.Select(p => new CheckBoxViewModel { DisplayValue = p }).ToList();
@@ -193,24 +197,37 @@ namespace HR.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePermissions(PermissionsFormViewModel model)
+        public async Task<IActionResult> DeletePermissionsPost(string Id)
         {
-            var role = await roleManager.FindByIdAsync(model.RoleId);
-
-            var result =await roleManager.DeleteAsync(role);
-            if (result.Succeeded)
+            try
             {
+                var role = await roleManager.FindByIdAsync(Id);
+                var allUserInRole = await db.UserRoles.Where(x => x.RoleId == role.Id).Select(x => x.UserId).Distinct().ToListAsync();
+
+                foreach (var item in allUserInRole)
+                {
+                    var user = await userManager.FindByIdAsync(item);
+                    var x = await userManager.DeleteAsync(user);
+
+                }
+
+                var result = await roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return Json(true);
+                }
+                else
+                {
+                    return Json(false);
+                }
                 return RedirectToAction(nameof(Index));
             }
-            else
+            catch (System.Exception ex)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+
+                throw;
             }
-            return RedirectToAction(nameof(Index));
+          
         }
 
     }

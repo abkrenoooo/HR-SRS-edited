@@ -1,10 +1,10 @@
-﻿
-@model DLL.ViewModels.Home.PublicHoliday_VM
+﻿@model DLL.ViewModels.Home.AbsentDaysAllow_VM
 @{
-    ViewData["Title"] = "Public Holiday";
+    ViewData["Title"] = "AbsentDaysAllow";
     Layout = "~/Views/Shared/_MainLayOut.cshtml";
 }
 
+<h1>AbsentDaysAllow</h1>
 
 
 
@@ -15,25 +15,61 @@
             <section id="configuration">
                 <div class="row">
                     <div class="col-lg-12">
-                        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.OfficialVacations.ToString())).Result.Succeeded)
-                        {
-                            <div class="card">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">Attendance and departure request</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block card-dashboard">
+
+                                    
+                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.AbsentDaysAllow.ToString())).Result.Succeeded)
+                                    {
+                                        <table id="tblStudent1" class="table table-striped table-bordered zero-configuration mt-40">
+
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Name</th>
+                                                    <th class="text-center">Date </th>
+                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.AbsentDaysAllow.ToString())).Result.Succeeded)
+                                                    {
+                                                        <th class="text-center">Action</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+
+                                        </table>}
+                                </div>
+                            </div>
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.AbsentDaysAllow.ToString())).Result.Succeeded)
+                            {
                                 <div class="card-header">
                                     <div class="card-title-wrap bar-success">
                                         <h4 class="card-title">Request A Form</h4>
                                     </div>
                                 </div>
+
                                 <div class="card-body">
                                     <div class="px-3">
-                                        <form id="form" name="contact-form" asp-action="CreatePublicHoliday" asp-controller="Home" class="form form-horizontal" data-ajax="true" data-ajax-method="POST">
- 
+                                        <form id="form" name="contact-form" asp-action="CreateAbsentDaysAllow" asp-controller="Home" class="form form-horizontal" data-ajax="true" data-ajax-method="POST">
                                             <div class="form-body">
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="projectinput1">Name: </label>
+                                                    <label class="col-md-3 label-control" for="EmployeeId">Employee Name : </label>
                                                     <div class="col-md-9">
-                                                        <input type="text" id="Name" class="form-control" asp-for="Name">
-                                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                                        <select id="EmployeeId" asp-for="EmployeeId" class="form-control">
+                                                            <option value="-1">Choose Employee</option>
+                                                            @foreach (var item in ViewBag.Employee)
+                                                            {
+                                                                <option class="form-control" value="@item.Id">@item.Name</option>
+                                                            }
+
+                                                        </select>
+                                                        <span asp-validation-for="EmployeeId" class="text-danger"></span>
                                                     </div>
                                                 </div>
 
@@ -50,10 +86,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="form-actions">
                                                 <button type="button" class="btn btn-danger mr-1">
-                                                    <a asp-action="PublicHoliday" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
+                                                    <a asp-action="Attendance" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
                                                 </button>
                                                 <button type="button" class="btn btn-success" onclick="Create()">
                                                     <i class="icon-note"></i> Save
@@ -62,41 +97,9 @@
                                         </form>
                                     </div>
 
-                                </div>
-                            </div>}
-                        @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.View(Modules.OfficialVacations.ToString())).Result.Succeeded)
-                        {
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title-wrap bar-success">
-                                        <h4 class="card-title">Official Vacations</h4>
-                                    </div>
-                                </div>
-                                <div class="card-body collapse show">
-                                    <div class="card-block card-dashboard">
+                                </div>}
 
-                                        <table id="tblStudent" class="table table-striped table-bordered zero-configuration mt-40">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center">Name</th>
-                                                    <th class="text-center">Date </th>
-                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Edit(Modules.OfficialVacations.ToString())).Result.Succeeded)
-                                                    {
-                                                        <th class="text-center">Eite</th>
-                                                    }
-                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.OfficialVacations.ToString())).Result.Succeeded)
-                                                    {
-                                                        <th class="text-center">Delete</th>
-}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -116,17 +119,17 @@
         LoadData();
     });
     function Create() {
-        let Name = $("#Name").val();
+        let EmployeeId = $("#EmployeeId").val();
         let Date = $("#Date").val();
-        var publicHoliday = {
-            Name: Name,
+        var attendance = {
+            EmployeeId: EmployeeId,
             Date: Date,
         };
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: "/Home/CreatePublicHoliday",
-            data: publicHoliday,
+            url: "/Home/CreateAbsentDaysAllow",
+            data: attendance,
             success: function (res) {
                 if (res == true) {
                     swal("Success!", "You clicked the button!", "success").then((ok) => {
@@ -147,10 +150,10 @@
         });
     };
     function LoadData() {
-        $("#tblStudent tbody tr").remove();
+        $("#tblStudent1 tbody tr").remove();
         $.ajax({
             type: 'POST',
-            url: '/Home/LoadDatePublicHoliday',
+            url: '/Home/LoadDateabAentDaysAllow',
             dataType: 'json',
             data: { id: '' },
             success: function (data) {
@@ -158,13 +161,13 @@
                 var items = '';
                 $.each(data, function (i, item) {
                     var rows = "<tr>"
-                        + "<td id='empid' class='text-center'>" + item.name + "</td>"
+                        + "<td id='empid' class='text-center'>" + item.employeeName + "</td>"
                         + "<td class='text-center'>" + item.date.substring(0, 10) + "</td>"
-                        +   '@if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Edit(Modules.OfficialVacations.ToString())).Result.Succeeded) { <td class="text-center" ><a onclick="Edit(' + item.id + ')"  class="btn btn-success mb-2" "' + item.id + '">Edit</a></td >}'
-                                        + '@if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.OfficialVacations.ToString())).Result.Succeeded) { <td class="text-center" ><a onclick="Delete(' + item.id + ')" class="btn btn-danger mb-2" >Delete</a></td >}'
-                                        + "</tr>";
-                    $('#tblStudent tbody').append(rows);
-                        });
+                        + '@if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Delete(Modules.AbsentDaysAllow.ToString())).Result.Succeeded)
+                            {<td class="text-center" ><a onclick="Delete(' + item.id + ')" class="btn btn-danger mb-2"  >Delete</a></td >}'
+                        + "</tr>";
+                    $('#tblStudent1 tbody').append(rows);
+                });
             },
             error: function (ex) {
                 var r = jQuery.parseJSON(response.responseText);
@@ -187,7 +190,7 @@
                 if (willDelete) {
                     $.ajax({
                         type: 'POST',
-                        url: '/Home/DeletePublicHoliday/' + id,
+                        url: '/Home/DeleteAbsentDaysAllow/' + id,
                         success: function (res) {
                             if (res) {
                                 swal("Poof! Your imaginary file has been deleted!", {
@@ -205,9 +208,6 @@
                 }
             });
     }
-    function Edit(id) {
-        window.open("/Home/EditPublicHoliday?Id="+id)
-    }
 </script>
 
 <script src="~/jquery/jquery.min.js"></script>
@@ -215,4 +215,3 @@
 <script src="~/jquery-validate/jquery.validate.js"></script>
 
 <script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-

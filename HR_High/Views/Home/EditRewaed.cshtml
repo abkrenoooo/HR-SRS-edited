@@ -1,0 +1,161 @@
+﻿
+@model DLL.ViewModels.Home.Rewaed_VM
+@{
+    ViewData["Title"] = "EditRewaed";
+    Layout = "~/Views/Shared/_MainLayOut.cshtml";
+}
+
+
+
+
+
+
+<div class="main-content">
+    <div class="container">
+        <div class="container-fluid">
+            <!-- Zero configuration table -->
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">Edit Advance Payment request</h4>
+                                </div>
+                            </div>
+
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Module.Create(Modules.AdvancePayment.ToString())).Result.Succeeded)
+                            {
+                                <div class="card-header">
+                                    <div class="card-title-wrap bar-success">
+                                        <h4 class="card-title">Request A Form</h4>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="px-3">
+                                        <form id="form" name="contact-form" asp-action="CreateRewaed" asp-controller="Home" class="form form-horizontal" data-ajax="true" data-ajax-method="POST">
+                                            <div class="form-body">
+                                                <input id="Id" type="hidden" asp-for="Id">
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="EmployeeId">Employee Name : </label>
+                                                    <div class="col-md-9">
+                                                        <select id="EmployeeId" asp-for="EmployeeId" class="form-control">
+                                                            <option value="-1">Choose Employee</option>
+                                                            @foreach (var item in ViewBag.Employee)
+                                                            {
+                                                                <option class="form-control" value="@item.Id">@item.Name</option>
+                                                            }
+
+                                                        </select>
+                                                        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="Date">Date: </label>
+                                                    <div class="col-md-9">
+                                                        <div class="position-relative has-icon-left">
+                                                            <input type="date" id="Date" class="form-control" asp-for="Date">
+                                                            <div class="form-control-position">
+                                                                <i class="ft-message-square"></i>
+                                                            </div>
+                                                            <span asp-validation-for="Date" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="Value">Value: </label>
+                                                <div class="col-md-9">
+                                                    <input type="number" s id="Value" class="form-control" asp-for="Value">
+                                                    <span asp-validation-for="Value" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="Type">Discount / Extra : </label>
+                                                <div class="col-md-9">
+                                                    <select id="Type" asp-for="Type" class="form-control">
+                                                        <option value="-1">Choose Type</option>
+                                                        <option class="form-control" value="Discount">Discount</option>
+                                                        <option class="form-control" value="Extra">Extra</option>
+
+                                                    </select>
+                                                    <span asp-validation-for="Type" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                                <div class="form-actions">
+                                                    <button type="button" class="btn btn-danger mr-1">
+                                                        <a asp-action="Rewaed" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
+                                                    </button>
+                                                    <button type="button" class="btn btn-success" onclick="Create()">
+                                                        <i class="icon-note"></i> Save
+                                                    </button>
+                                                </div>
+                                        </form>
+                                    </div>
+
+                                </div>}
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+<script src="~/jquery/jquery.min.js"></script>
+<script src="~/app-assets/vendors/js/core/jquery-3.3.1.min.js"></script>
+<script src="~/jquery-validate/jquery.validate.js"></script>
+<script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@section Scripts  {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+<script>
+
+    function Create() {
+        let Id = $("#Id").val();
+        let EmployeeId = $("#EmployeeId").val();
+        let Type = $("#Type").val();
+        let Date = $("#Date").val();
+        let Value = $("#Value").val();
+        var Rewaed = {
+            Id: Id,
+            EmployeeId: EmployeeId,
+            Date: Date,
+            Value: Value,
+            Type: Type,
+        };
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/Home/CreateRewaed",
+            data: Rewaed,
+            success: function (res) {
+                if (res == true) {
+                    swal("Success!", "You clicked the button!", "success").then((ok) => {
+                        window.open("/Home/Rewaed");
+                    });
+                }
+                else if (res == false) {
+                    swal("Error!", "Data Not Valid!", "error");
+                }
+            },
+            error: function (res) {
+                swal("Error!", " Cheack Your Data!", "error");
+            }
+        });
+    };
+
+</script>
+
+<script src="~/jquery/jquery.min.js"></script>
+<script src="~/app-assets/vendors/js/core/jquery-3.3.1.min.js"></script>
+<script src="~/jquery-validate/jquery.validate.js"></script>
+
+<script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+

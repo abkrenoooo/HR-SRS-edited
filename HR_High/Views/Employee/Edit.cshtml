@@ -25,7 +25,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="px-3">
-                                    <form class="form form-horizontal" asp-action="Edit" asp-controller="Employee" method="post">
+                                    <form class="form form-horizontal" asp-action="Create" asp-controller="Employee" method="post">
                                         <div class="text-danger text-center" asp-validation-summary="All"></div>
                                         <input id="Id" type="hidden" asp-for="Id">
                                         <div class="form-body">
@@ -154,6 +154,13 @@
                                                 </div>
 
                                             </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput3">Absent Day: </label>
+                                                <div class="col-md-9">
+                                                    <input type="number" id="AbsentDay" class="form-control" asp-for="AbsentDay">
+                                                    <span asp-validation-for="AbsentDay" class="text-danger"></span>
+                                                </div>
+                                            </div>
 
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput9">Notes: </label>
@@ -167,7 +174,7 @@
                                             <button type="button" class="btn btn-danger mr-1">
                                                 <a asp-action="Index" asp-controller="Employee">Cancel</a>
                                             </button>
-                                            <input type="button" onclick="Edit()" class="btn btn-primary" value="Edit">
+                                            <input type="submit"  class="btn btn-primary" value="Edit">
                                         </div>
                                     </form>
                                 </div>
@@ -201,7 +208,8 @@
         var Phone= $("#Phone").val();
         var Salary= $("#Salary").val();
         var NationalId= $("#NationalId").val();
-        var Nationality= $("#Nationality").val();
+        var Nationality = $("#Nationality").val();
+        var AbsentDay = $("#AbsentDay").val();
         var Notes = $("#Notes").val();
         let emp = {
             Id: Id,
@@ -217,6 +225,7 @@
             Salary: Salary,
             NationalId: NationalId,
             Nationality: Nationality,
+            AbsentDay: AbsentDay,
             Notes: Notes,
         };
         $.ajax({

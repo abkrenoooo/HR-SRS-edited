@@ -1,8 +1,11 @@
-﻿@model DLL.ViewModels.Home.GenralSettings_VM
+﻿
+@model DLL.ViewModels.Home.PrivateSettings_VM
 @{
-    ViewData["Title"] = "Genral Settings";
+    ViewData["Title"] = "PrivateSettings";
     Layout = "~/Views/Shared/_MainLayOut.cshtml";
 }
+
+
 
 <div class="main-content">
     <div class="container">
@@ -14,24 +17,42 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title-wrap bar-success">
-                                    <h4 class="card-title" id="horz-layout-basic">General Settings Form </h4>
+                                    <h4 class="card-title" id="horz-layout-basic">Private Settings Form </h4>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="px-3">
-                                    <form asp-action="GenralSettings" asp-controller="Home" class="form form-horizontal">
-                                        <input type="hidden" id="Id" asp-for="Id">
+                                    <form id="form" asp-action="PrivateSettings" asp-controller="Home" class="form form-horizontal">
+                                        <input type="hidden" id="Id" class="form-control" asp-for="Id">
                                         <div class="form-body">
                                             <h4 class="form-section">
-                                                <i class="icon-user"></i>General information
+                                                <i class="icon-user"></i>Private information
                                             </h4>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="projectinput1">Employee: </label>
+                                                <div class="col-md-9">
+                                                    <select id="EmployeeId" asp-for="EmployeeId" class="form-control">
+                                                        <option value="-1">Choose Employee</option>
+                                                        @foreach (var item in ViewBag.Employee)
+                                                        {
+                                                        <option  class="form-control" value="@item.Id">@item.Name</option>
+                                                        }
+
+                                                    </select>
+                                                    <div class="row container m-auto d-flex justify-content-center">
+                                                        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                                                    </div>
+                                                   
+                                                </div>
+                                            </div>
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput1">The extra: </label>
                                                 <div class="col-md-9">
                                                     <input type="text" id="Extra" class="form-control" asp-for="Extra">
-                                                </div>
-                                                <div class="row container m-auto d-flex justify-content-center">
-                                                    <span asp-validation-for="Extra" class="text-danger"></span>
+
+                                                    <div class="row container m-auto d-flex justify-content-center">
+                                                        <span asp-validation-for="Extra" class="text-danger"></span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -40,18 +61,19 @@
                                                 </label>
                                                 <div class="col-md-9">
                                                     <input type="text" id="Discount" class="form-control" asp-for="Discount">
+                                                    <div class="row container m-auto d-flex justify-content-center">
+                                                        <span asp-validation-for="Discount" class="text-danger"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="row container m-auto d-flex justify-content-center">
-                                                <span asp-validation-for="Discount" class="text-danger"></span>
-                                            </div>
+                                            
                                             <div class="row container m-auto d-flex justify-content-center">
                                                 <span asp-validation-for="Satrday" class="text-danger"></span>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-md-3 label-control" for="projectinput7">Weekly Holidays: </label>
                                                 <div class="col-md-9">
-                                                    <input type="checkbox" id="Satrday" asp-for="Satrday">
+                                                    <input  type="checkbox" id="Satrday" asp-for="Satrday">
                                                     <label asp-for="Satrday"> Satrday</label><br>
                                                     <input type="checkbox" id="Sunday" asp-for="Sunday">
                                                     <label asp-for="Sunday"> Sunday</label><br>
@@ -73,13 +95,8 @@
 
 
                                         <div class="form-actions">
-                                            <button type="button" class="btn btn-danger mr-1">
-                                                <a asp-action="GenralSettingsView" asp-controller="Home"><i class="icon-trash"></i> Cancel</a>
-
-                                            </button>
-                                            <button type="button" onclick="Edit()"  class="btn btn-success">
-                                                <i class="icon-note"></i> Save
-                                            </button>
+                                            
+                                            <input type="button" onclick="Save()" class="btn btn-primary" value="Save">
                                         </div>
                                     </form>
                                 </div>
@@ -92,9 +109,57 @@
         </div>
     </div>
 </div>
+<script src="~/jquery/jquery.min.js"></script>
+<script src="~/app-assets/vendors/js/core/jquery-3.3.1.min.js"></script>
+<script src="~/jquery-validate/jquery.validate.js"></script>
+<script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <script>
-    function Edit() {
+    $('#EmployeeId').change(function(){
+        if($('#EmployeeId').val()=='-1')
+        {
+            document.getElementById("form").reset();
+        }
+        console.log('alm');
+        let id= $('#EmployeeId').val();
+          $.ajax({
+              type: "GET",
+              url: "/Home/FindPrivateSettingsByEmployeeID?id="+id,
+              success: function (res) {
+                  if(res== null)
+                  {
+                      $("#Id").val(0);
+                     $("#Extra").val('');
+                        $("#Discount").val('');
+                        $("#Sunday").prop("checked",false);
+                        $("#Monday").prop("checked",false);
+                        $("#Tuesday").prop("checked",false);
+                        $("#wednesday").prop("checked",false);
+                        $("#Turthday").prop("checked",false);
+                        $("#Friday").prop("checked",false);
+                        $("#Satrday").prop("checked",false);
+                  }
+                  else
+                  {
+                      $("#Id").val(res.id);
+                       $("#Extra").val(res.extra);
+                       $("#Discount").val(res.discount);
+                       res.sunday==true?$("#Sunday").prop("checked",true):$("#Sunday").prop("checked",false);
+                       res.monday==true?$("#Monday").prop("checked",true):$("#Monday").prop("checked",false);
+                       res.tuesday==true?$("#Tuesday").prop("checked",true):$("#Tuesday").prop("checked",false);
+                       res.wednesday==true?$("#wednesday").prop("checked",true):$("#wednesday").prop("checked",false);
+                       res.turthday==true?$("#Turthday").prop("checked",true):$("#Turthday").prop("checked",false);
+                       res.friday==true?$("#Friday").prop("checked",true):$("#Friday").prop("checked",false);
+                       res.satrday==true?$("#Satrday").prop("checked",true):$("#Satrday").prop("checked",false);
+               
+                  }
+              }
+          });
+    }) ;
+         
+     
+    function Save() {
         var Id = $("#Id").val();
+        var EmployeeId = $("#EmployeeId").val();
         var Extra = $("#Extra").val();
         var Discount = $("#Discount").val();
         var Sunday = $("#Sunday").is(':checked');
@@ -105,7 +170,8 @@
         var Friday = $("#Friday").is(':checked');
         var Satrday = $("#Satrday").is(':checked');
         let input = {
-            Id: Id,
+            Id:Id,
+            EmployeeId: EmployeeId,
             Extra: Extra,
             Discount: Discount,
             Sunday: Sunday,
@@ -127,17 +193,23 @@
                 if (willDelete) {
                     $.ajax({
                         type: "POST",
-                        url: "/Home/GenralSettings",
+                        url: "/Home/PrivateSettings",
                         data: input,
                         success: function (res) {
-                            if (res) {
+                            if (res==true) {
                                 swal("Success Edit!", "You clicked the button!", "success").then((ok) => {
-                                    window.open("/Home/GenralSettingsView");
+                                   location.reload();s
                                 });
                             }
                             else {
-                                swal("Error!", "You clicked the button!", "error");
+                                swal("Error!", "Check Your Data ...!", "error");
                             }
+                         },
+                        error: function (ex) {
+                            var r = jQuery.parseJSON(response.responseText);
+                            alert("Message: " + r.Message);
+                            alert("StackTrace: " + r.StackTrace);
+                            alert("ExceptionType: " + r.ExceptionType);
                         }
                     });
                 }
@@ -145,6 +217,6 @@
                     swal("Edit not Success!");
                 }
             });
-        
     }
+   
 </script>
